@@ -23,6 +23,7 @@
       "name": "web",
       "version": "0.0.0",
       "dependencies": {
+        "@konoharku/types": "workspace:*",
         "@supabase/supabase-js": "^2.99.1",
         "@vueuse/core": "^14.2.1",
         "class-variance-authority": "^0.7.1",

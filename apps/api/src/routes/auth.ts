@@ -143,12 +143,28 @@ auth.get('/microsoft/poll/:sessionId', async (c) => {
 
   const email = `mc_${profile.id}@konoharku.local`
 
-  // Crée le user Supabase si inexistant (ignore l'erreur si déjà existant)
-  await supabase.auth.admin.createUser({
+  // Crée le user si inexistant, ou récupère l'existant
+  const { data: created } = await supabase.auth.admin.createUser({
     email,
     email_confirm: true,
     user_metadata: { minecraft },
+    app_metadata: { role: 'user' },
   })
+
+  // Si le user existait déjà, on met à jour ses métadonnées Minecraft
+  // sans écraser son rôle existant
+  if (!created?.user) {
+    const { data: { users } } = await supabase.auth.admin.listUsers()
+    const existing = users.find(u => u.email === email)
+    if (existing) {
+      await supabase.auth.admin.updateUserById(existing.id, {
+        user_metadata: { minecraft },
+        app_metadata: {
+          role: existing.app_metadata?.role ?? 'user',
+        },
+      })
+    }
+  }
 
   // Génère un token de connexion one-time
   const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
