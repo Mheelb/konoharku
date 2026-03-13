@@ -6,8 +6,19 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: () => import('@/pages/Home.vue'),
+      component: () => import('@/layouts/DefaultLayout.vue'),
       meta: { requiresAuth: true },
+      children: [
+        {
+          path: '',
+          component: () => import('@/pages/Home.vue'),
+        },
+        // Ajoute tes futures pages ici, elles auront toutes la navbar
+        // { path: 'builds', component: () => import('@/pages/Builds.vue') },
+        // { path: 'stocks', component: () => import('@/pages/Stocks.vue') },
+        // { path: 'actualites', component: () => import('@/pages/Actualites.vue') },
+        // { path: 'objectifs', component: () => import('@/pages/Objectifs.vue') },
+      ],
     },
     {
       path: '/auth',
