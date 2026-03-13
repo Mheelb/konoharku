@@ -13,7 +13,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "hono": "^4.12.7",
-    "@konoharku/types": "workspace:*"
+    "@konoharku/types": "workspace:*",
+    "@supabase/supabase-js": "^2.99.1",
+    "hono": "^4.12.7"
   }
 }
